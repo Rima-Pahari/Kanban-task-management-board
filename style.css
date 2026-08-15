@@ -1,0 +1,151 @@
+/* =========================
+   RESET
+========================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+        "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+/* =========================
+   VARIABLES (dark = default, light = override)
+========================= */
+:root {
+    --bg-color: #000000;
+    --bg-button-color: #1a1a1a;
+    --bg-task-color: #2a2a2a;
+    --primary-text-color: #f4f4f4;
+    --secondary-text-color: #d1d1d1;
+    --delete-color: #ff4d4d;
+    --progress-fill-color: #4caf50;
+    --progress-track-color: #2a2a2a;
+    --nav-padding: 15px 30px;
+    --section-padding: 15px 30px;
+    --padding-s: 5px; --padding-m: 10px; --padding-l: 15px; --padding-xl: 20px; --padding-xxl: 30px;
+    --border-radius-s: 5px; --border-radius-m: 10px; --border-radius-l: 15px; --border-radius-xl: 20px; --border-radius-xxl: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+:root[data-theme="light"] {
+    --bg-color: #f4f4f4;
+    --bg-button-color: #e4e4e4;
+    --bg-task-color: #ffffff;
+    --primary-text-color: #1a1a1a;
+    --secondary-text-color: #4a4a4a;
+    --progress-fill-color: #43a047;
+    --progress-track-color: #e4e4e4;
+    /* --delete-color intentionally unchanged in both themes */
+}
+
+/* =========================
+   BODY / LAYOUT
+========================= */
+body { background-color: var(--bg-color); color: var(--primary-text-color); }
+main { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* =========================
+   NAVBAR
+========================= */
+nav {
+    padding: var(--nav-padding);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: var(--padding-m);
+    position: sticky; top: 0;
+    background-color: var(--bg-color);
+    z-index: 100;
+    transition: background-color 0.3s ease;
+}
+nav .left { font-size: 1.5rem; font-weight: 700; }
+nav .right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* Shared look for nav buttons + search input */
+nav button, nav #search-input {
+    background-color: var(--bg-button-color);
+    color: var(--primary-text-color);
+    border: none; outline: none;
+    padding: var(--padding-m) var(--padding-l);
+    border-radius: var(--border-radius-m);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+nav button { cursor: pointer; }
+nav button:hover { transform: translateY(-2px); }
+nav #clear-board { background-color: var(--delete-color); color: #ffffff; }
+nav #search-input { min-width: 200px; }
+nav #search-input::placeholder { color: var(--secondary-text-color); }
+
+/* =========================
+   PROGRESS BAR
+========================= */
+.progress-wrapper { display: flex; align-items: center; gap: var(--padding-m); padding: 0 30px var(--padding-m); }
+.progress-bar { flex: 1; height: 10px; background-color: var(--progress-track-color); border-radius: 999px; overflow: hidden; transition: background-color 0.3s ease; }
+.progress-fill { height: 100%; width: 0%; background-color: var(--progress-fill-color); border-radius: 999px; transition: width 0.3s ease, background-color 0.3s ease; }
+.progress-label { font-size: 0.85rem; color: var(--secondary-text-color); min-width: 90px; text-align: right; }
+
+/* =========================
+   BOARD & COLUMNS
+========================= */
+.board { flex-grow: 1; display: flex; gap: var(--padding-xxl); padding: var(--section-padding); }
+.task-column {
+    flex: 1; background-color: var(--bg-button-color); border-radius: var(--border-radius-m);
+    padding: var(--padding-m); display: flex; flex-direction: column; gap: var(--padding-m);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.task-column .heading { display: flex; justify-content: space-between; align-items: center; }
+.heading .left { font-weight: 600; }
+.heading .right { background-color: var(--bg-task-color); min-width: 35px; text-align: center; padding: 4px 10px; border-radius: 999px; transition: background-color 0.3s ease; }
+.hover-over { border: 2px dashed var(--primary-text-color); transform: scale(1.02); }
+
+/* =========================
+   TASK CARD
+========================= */
+.task {
+    background-color: var(--bg-task-color); padding: var(--padding-m); border-radius: var(--border-radius-m);
+    display: flex; flex-direction: column; gap: var(--padding-s); cursor: grab;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.task:hover { transform: translateY(-2px); }
+.task-header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--padding-s); }
+.task-header h2 { flex: 1; font-size: 1rem; word-break: break-word; }
+.task p { font-size: 0.9rem; color: var(--secondary-text-color); word-break: break-word; }
+.task-btn-container { display: flex; justify-content: flex-end; gap: var(--padding-m); }
+.task-btn-container button { border: none; outline: none; background-color: var(--delete-color); color: #ffffff; padding: var(--padding-s) var(--padding-m); border-radius: var(--border-radius-s); cursor: pointer; }
+.due-date { font-size: 0.8rem; color: var(--secondary-text-color); }
+.overdue { border: 2px solid #ff4d4d; }
+.priority-badge { display: inline-block; width: fit-content; flex-shrink: 0; white-space: nowrap; font-size: 0.75rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+.priority-high { background-color: rgba(255, 77, 77, 0.2); color: #ff6b6b; }
+.priority-medium { background-color: rgba(255, 193, 7, 0.2); color: #ffca28; }
+.priority-low { background-color: rgba(76, 175, 80, 0.2); color: #66bb6a; }
+
+/* =========================
+   MODAL (single modal, reused for Add + Edit)
+========================= */
+.modal { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; }
+.modal.active { display: flex; }
+.modal .bg { position: absolute; inset: 0; background-color: rgba(61, 61, 61, 0.4); backdrop-filter: blur(5px); }
+.modal .center {
+    position: relative; z-index: 10; width: 400px; max-width: 90%;
+    background-color: var(--bg-button-color); border-radius: var(--border-radius-m); padding: var(--padding-xxl);
+    display: flex; flex-direction: column; gap: var(--padding-m);
+    transition: background-color 0.3s ease;
+}
+.modal .center h2 { font-size: 1.1rem; }
+.modal .center input, .modal .center textarea, .modal .center select {
+    background-color: var(--bg-task-color); color: var(--primary-text-color);
+    border: none; outline: none; padding: var(--padding-m); border-radius: var(--border-radius-s);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.modal .center textarea { min-height: 120px; resize: vertical; }
+.modal .center button {
+    align-self: center; width: fit-content; background-color: var(--bg-task-color); color: var(--primary-text-color);
+    border: none; outline: none; padding: var(--padding-m) var(--padding-l); border-radius: var(--border-radius-m); cursor: pointer;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .board { flex-direction: column; padding: 15px; }
+    nav { padding: 15px; }
+    .progress-wrapper { padding: 0 15px var(--padding-m); }
+}
