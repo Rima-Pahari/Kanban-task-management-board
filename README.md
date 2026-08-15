@@ -64,7 +64,7 @@ https://kanban-board-rp.netlify.app/
 ## 🔗 GitHub Repository
 
 ```text
-https://github.com/your-username/kanban-task-management-board
+https://github.com/Rima-Pahari/Kanban-task-management-board
 ```
 
 ## 👩‍💻 Author
