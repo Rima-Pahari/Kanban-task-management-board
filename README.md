@@ -58,7 +58,7 @@ Kanban-Task-Management-Board/
 ## 🔗 Live Demo
 
 ```text
-https://your-username.github.io/kanban-task-management-board/
+https://kanban-board-rp.netlify.app/
 ```
 
 ## 🔗 GitHub Repository
